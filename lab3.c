@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int MenorValor(int vetor[], int tamanho)
+int MenorValor(int vetor[], int tamanho) // encontra o valor mínimo de um vetor
 {
     int local = 0; // Inicializa com o primeiro elemento do vetor
     for (int i = 1; i < tamanho; i++)
@@ -18,8 +18,9 @@ int main()
     int C, N, T, D, temp = 0, result = 0;
     scanf("%d %d", &C, &N);
     int cv[C];
-    for (int i = 0; i < C; i++) {
-        cv[i] = 0; // Inicializa cada elemento do vetor com um valor sequencial
+    for (int i = 0; i < C; i++) // Inicializa cada elemento do vetor com valor 0
+    { 
+        cv[i] = 0;
     }
     for (int i = 0; i < N; i++)
     {
