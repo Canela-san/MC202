@@ -95,7 +95,6 @@ void duplicate(Node **lista, Node **copia){
     aux = *lista;
     while(aux->proximo){
         Node *aux2 = (Node *)malloc(sizeof(Node));
-        *copia
     }
     
 }

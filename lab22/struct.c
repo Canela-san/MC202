@@ -1,15 +1,14 @@
-#include <stdio.h>
-#include <string.h>
 
-node *create(long capacity, double factor)
-{
-    list *L = (list *)malloc(sizeof(list));
-    L->head = NULL;
-    L->indicator = NULL;
-}
+// void Lcreate()
+// {
+//     list *L = (list *)malloc(sizeof(list));
+//     L->head = NULL;
+//     L->indicator = NULL;
+// }
 
-void insert(list *L, char nome[100])
+void Linsert(list *L, char nome[100])
 {
+    printf("inserindooo\n");
     node *no = (node *)malloc(sizeof(node));
     no->name = (char *)malloc(sizeof(char) * 100);
     strcpy(no->name, nome);
@@ -17,7 +16,8 @@ void insert(list *L, char nome[100])
     {
         L->head = no;
         L->indicator = no;
-        no->prev, no->next = NULL;
+        no->prev = NULL;
+        no->next = NULL;
     }
     else
     {
@@ -27,8 +27,9 @@ void insert(list *L, char nome[100])
     }
 }
 
-void remove(list *L, char name[100])
+void Lremove(list *L, char name[100])
 {
+    printf("Removendooo\n");
     node *lixo;
     node *aux = (node *)malloc(sizeof(node));
     aux = L->head;
@@ -45,9 +46,7 @@ void remove(list *L, char name[100])
             L->head = lixo->next;
             L->head->prev = NULL;
             if (L->indicator == lixo)
-            {
                 L->indicator = lixo->next;
-            }
         }
         else
         {
@@ -57,31 +56,37 @@ void remove(list *L, char name[100])
         free(lixo);
     }
 }
-void play(list *L)
+void Lplay(list *L)
 {
-    if (L->indicator->next != NULL)
-        L->indicator = L->indicator->next;
+    printf("tocandooo\n");
+        
+    if (L->indicator)
+    {
+        printf("%s\n", L->indicator->name);
+        if (L->indicator->next != NULL)
+            L->indicator = L->indicator->next;
+    }
 }
 
-void go_back(list *L)
+void Lgo_back(list *L)
 {
+    printf("voltando\n");
     if (L->indicator->prev != NULL)
         L->indicator = L->indicator->prev;
 }
 
-void final(list *L)
+void Lfinal(list *L)
 {
-    node *aux;
-    aux = L->head;
-    while (aux->next)
+    printf("finalllll\n");
+    while (L->indicator)
     {
-        aux = aux->next;
+        Lplay(L);
     }
-    L->indicator = aux;
 }
 
-void invert(list *L)
+void Linvert(list *L)
 {
+    printf("invertendooooo\n");
     if ((L->head == NULL) || (L->head->next == NULL))
         return;
 
@@ -95,5 +100,17 @@ void invert(list *L)
         atual->prev = atual->next;
         atual->next = aux;
         atual = atual->prev;
+    }
+}
+
+void Lfree(list *L)
+{
+    printf("liberandooo");
+    node *aux;
+    while (L->head != NULL)
+    {
+        aux = L->head;
+        L->head = L->head->next;
+        free(aux);
     }
 }
