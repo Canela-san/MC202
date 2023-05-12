@@ -1,3 +1,8 @@
+/**
+  list.h
+  Declarations for a deque of floats stored in a dynamic array.
+**/
+
 
 #ifndef STRUCT_H
 #define STRUCT_H
@@ -18,11 +23,11 @@ typedef struct list
 
 // void Lcreate(void);
 
-void Linsert(list *L, char nome[150]);
+void Linsert(list *L, char nome[100]);
 
-void Lremove(list *L, char nome[150]);
+void Lremove(list *L, char nome[100]);
 
-int Lplay(list *L);
+void Lplay(list *L);
 
 void Lgo_back(list *L);
 

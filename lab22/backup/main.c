@@ -1,11 +1,11 @@
-//Feito por Gabriel Canela, RA243453
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "struct.h"
+#include "struct.c"
 
-void zerarArray(char array[], int tamanho)
+    void
+    zerarArray(char array[], int tamanho)
 {
     for (int i = 0; i < tamanho; i++)
     {
@@ -16,10 +16,9 @@ void zerarArray(char array[], int tamanho)
 int main(void)
 {
     int temp = 1;
-    int temp2 = 0;
-    char entrada[170];
+    char entrada[100];
     char comando[15];
-    char nome[150];
+    char nome[50];
     char *det;
     while (temp)
     {
@@ -29,10 +28,6 @@ int main(void)
         scanf("%d", &temp);
         if (temp == 0)
             break;
-        if (temp2)
-            printf("\n"); //Adiciona um espaço entre cada playlist diferente
-        else 
-            temp2 = 1;
         getchar();
         for (int k = 0; k < temp; k++)
         {
@@ -42,11 +37,13 @@ int main(void)
 
             fgets(entrada, sizeof(entrada), stdin);
             det = strtok(entrada, " ");
+            printf("---%s----", det);
             strcpy(comando, det);
             if (strlen(comando) > 0 && comando[strlen(comando) - 1] == '\n')
             {
                 comando[strlen(comando) - 1] = '\0';
             }
+            printf("COMANDO: -%s-\n", comando);
             while (det)
             {
                 det = strtok(NULL, " ");

@@ -1,58 +1,43 @@
-//Feito por Gabriel Canela, RA243453
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "struct.h"
+// #include "struct.h"
+// #include "struct.c"
 
-void zerarArray(char array[], int tamanho)
-{
-    for (int i = 0; i < tamanho; i++)
-    {
-        array[i] = '\0';
-    }
-}
 
-int main(void)
-{
+int main(){
+        // list *L = (list *)malloc(sizeof(list));
+    // L->head = NULL;
+    // L->indicator = NULL;
+
+    // Linsert(L, "Gabriel Canela");
+    // Linsert(L, "Zezin ped");
+    // Linsert(L, "waku waku");
+
     int temp = 1;
-    int temp2 = 0;
-    char entrada[170];
+    char entrada[200];
     char comando[15];
-    char nome[150];
+    char nome[200];
     char *det;
     while (temp)
     {
-        list *L = (list *)malloc(sizeof(list));
-        L->head = NULL;
-        L->indicator = NULL;
         scanf("%d", &temp);
         if (temp == 0)
             break;
-        if (temp2)
-            printf("\n"); //Adiciona um espaço entre cada playlist diferente
-        else 
-            temp2 = 1;
-        getchar();
         for (int k = 0; k < temp; k++)
         {
-            zerarArray(entrada, 100);
-            zerarArray(comando, 15);
-            zerarArray(nome, 50);
-
             fgets(entrada, sizeof(entrada), stdin);
             det = strtok(entrada, " ");
             strcpy(comando, det);
-            if (strlen(comando) > 0 && comando[strlen(comando) - 1] == '\n')
-            {
-                comando[strlen(comando) - 1] = '\0';
-            }
+            strcpy(nome, "");
             while (det)
             {
                 det = strtok(NULL, " ");
                 if (det != NULL)
                 {
+                    
                     strcat(nome, det);
+
                     if (strlen(nome) > 0 && nome[strlen(nome) - 1] == '\n')
                     {
                         nome[strlen(nome) - 1] = '\0';
@@ -61,8 +46,14 @@ int main(void)
                     {
                         strcat(nome, " ");
                     }
+                    printf(",%s,", det);
+                }
+                else
+                {
+                    // strcat(nome, '\0');
                 }
             }
+            
             if (strcmp(comando, "insere") == 0)
             {
                 Linsert(L, nome);
@@ -88,7 +79,7 @@ int main(void)
                 Linvert(L);
             }
         }
-        Lfree(L);
+        // Lfree(L);
     }
     return 0;
 }
