@@ -1,6 +1,6 @@
 
-#ifndef STRUCT_H
-#define STRUCT_H
+#ifndef SUBLISTA_H
+#define SUBLISTA_H
 
 typedef struct node
 {
@@ -16,12 +16,18 @@ typedef struct list
   int size;
 } list;
 
+void ler_lista(list *L);
+
+void executar_comandos(list *L);
+
 void insere_fim(list *L, int valor);
 
-void all_print(list *L);
+void print_L(list *L);
 
 void insere_sublista(list *L, list *sublist, int indice);
 
 list *create_sublist(list *L, int start, int end);
+
+void libera_lista(list *L);
 
 #endif

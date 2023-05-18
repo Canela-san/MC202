@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "sublista.h"
 
+//insere o valor no fim da lista encadeada
 void insere_fim(list *L, int valor)
 {
     int indice = 0;
@@ -30,7 +31,8 @@ void insere_fim(list *L, int valor)
     L->size++;
 }
 
-void all_print(list *L)
+//printa todos os valores da lista encadeada
+void print_L(list *L)
 {
     printf("A: {");
     if (L->head == NULL)
@@ -46,6 +48,7 @@ void all_print(list *L)
     printf(" }\n");
 }
 
+//Insere uma sublista encadeada em outra lista encadeada em uma posição indice.
 void insere_sublista(list *L, list *sublist, int indice)
 {
     if (L->head == NULL || sublist->head == NULL)
@@ -66,7 +69,7 @@ void insere_sublista(list *L, list *sublist, int indice)
         }
         else
         {
-            if (indice) //confere se a inserção é na posição 0
+            if (indice) //confere se a inserção é na posição 0, caso não seja:
             {
                 while (aux1->indice != indice)
                     aux1 = aux1->next;
@@ -76,7 +79,7 @@ void insere_sublista(list *L, list *sublist, int indice)
                 sublist->head->prev = aux1->prev;
                 aux2->next = aux1;
                 aux1->prev = aux2;
-            } else {
+            } else {    //tratamento para caso seja na posição 0:
                 L->head = aux2;
                 while (aux2->next != NULL)
                     aux2 = aux2->next;
@@ -96,10 +99,11 @@ void insere_sublista(list *L, list *sublist, int indice)
     }
 }
 
+//extrai uma sublista encadeada de uma lista encadeada.
 list *create_sublist(list *L, int start, int end)
 {
     if (L->head == NULL)
-        return;
+        return NULL;
     else
     {
         list *sublist = (list *)malloc(sizeof(list));
