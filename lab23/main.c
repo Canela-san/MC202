@@ -14,6 +14,5 @@ int main(void)
     ler_lista(L);             // função para ler a primeira entrada, que define a lista inicial.
     executar_comandos(L);     // função para criar um loop que executa os comando de entrada 's' e '+'.
     libera_lista(L);          // função para liberar a memória alocada pela lista.
-
     return 0;
 }
