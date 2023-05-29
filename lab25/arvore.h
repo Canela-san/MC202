@@ -4,12 +4,17 @@
 #ifndef ARVORE_H
 #define ARVORE_H
 
-// define os nós da árvore.
+//paremetros:
+#define NAME_SIZE 100
+#define COMMAND_SIZE 100
 
+
+
+// define os nós da árvore.
 typedef struct Node
 {
     long int k;
-    char name[];
+    char name[NAME_SIZE];
     float pontos;
     struct Node *left;
     struct Node *right;
@@ -25,5 +30,6 @@ void maximo(void);
 void sucessor(long int k);
 void predecessor(long int k);
 void buscar_intervalo(long int k1, long int k2);
+void free_tree(Node *root);
 
 #endif

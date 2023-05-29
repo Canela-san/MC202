@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "arvore.h"
 
 Node *createTree(void)
@@ -10,10 +12,10 @@ Node *createTree(void)
         return NULL;
     }
     node->k = NULL;
-    node->name = NULL;
     node->pontos = 0;
     node->left = NULL;
     node->right = NULL;
+    strcpy(node->name, NULL);
     return node;
 }
 void inserir(Node *root, long int k, char name[], float pontos)
@@ -26,7 +28,7 @@ void inserir(Node *root, long int k, char name[], float pontos)
         return;
     }
     node->k = k;
-    node->name = name;
+    strcpy(node->name, name);
     node->pontos = pontos;
     node->left = NULL;
     node->right = NULL;
@@ -58,3 +60,6 @@ void maximo(void);
 void sucessor(long int k);
 void predecessor(long int k);
 void buscar_intervalo(long int k1, long int k2);
+void free_tree(Node *root){
+
+}
