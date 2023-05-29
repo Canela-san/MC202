@@ -1,15 +1,14 @@
 // Feito por Gabriel Canela, RA243453.
 // Arquivo arvore.h
 
-#ifndef ARVORE_H
-#define ARVORE_H
-
-//paremetros:
 #define NAME_SIZE 100
 #define COMMAND_SIZE 100
 
 
+#ifndef ARVORE_H
+#define ARVORE_H
 
+//paremetros:
 // define os nós da árvore.
 typedef struct Node
 {
