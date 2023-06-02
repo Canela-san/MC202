@@ -1,8 +1,13 @@
+// Feito por Gabriel Canela, RA243453.
+// Arquivo main.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "arvore.h"
-#include "arvore.c"
+
+// #include "arvore.c"
+//Os tamanhos de variaveis como NAME_SIZE estão no arquivo arvore.h
 
 int main()
 {
