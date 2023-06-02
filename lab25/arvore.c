@@ -11,55 +11,66 @@ Node *createTree(void)
         printf("Erro de locação de memória");
         return NULL;
     }
-    node->k = NULL;
-    node->pontos = 0;
     node->left = NULL;
     node->right = NULL;
-    strcpy(node->name, NULL);
+    node->k = 0;
+    strcpy(node->name, "");
     return node;
 }
-void inserir(Node *root, long int k, char name[], float pontos)
+Node *inserir(Node *root, long int k, char name[], float pontos)
 {
     Node *node = (Node *)malloc(sizeof(Node));
-    Node *aux;
     if (node == NULL)
     {
-        prinf("Memoria insuficiente");
-        return;
+        printf("Memoria insuficiente");
+        return root;
     }
+
     node->k = k;
     strcpy(node->name, name);
     node->pontos = pontos;
     node->left = NULL;
     node->right = NULL;
-    aux = root;
 
-    if (root->k == NULL)
+    if ((root->k == 0) && (root->pontos == 0))
     {
-        root = node;
-        free(aux);
-        return NULL;
+        return node;
     }
 
-    while (aux)
+    Node *aux = root;
+    Node *anterior = NULL;
+    while (aux != NULL)
     {
+        anterior = aux;
         if (k < aux->k)
             aux = aux->left;
-        if (k > aux->k)
+        else if (k > aux->k)
             aux = aux->right;
-        if (k == aux->k)
-            return;
+        else
+            return root;
     }
-    aux = node;
+    if (k < anterior->k)
+        anterior->left = node;
+    else
+        anterior->right = node;
+    return root;
 }
 void remover(Node *root, long int k);
-void buscar(long int k);
-void imprimir(void);
-void minimo(void);
-void maximo(void);
-void sucessor(long int k);
-void predecessor(long int k);
-void buscar_intervalo(long int k1, long int k2);
-void free_tree(Node *root){
-
+void buscar(Node *root, long int k);
+void imprimir(Node *root)
+{
+    if (root == NULL)
+        return;
+    Node *aux = root;
+    imprimir(aux->left);
+    printf("k='%ld', nome='%s', pontos:'%f'\n", aux->k, aux->name, aux->pontos);
+    imprimir(aux->right);
+}
+void minimo(Node *root);
+void maximo(Node *root);
+void sucessor(Node *root, long int k);
+void predecessor(Node *root, long int k);
+void buscar_intervalo(Node *root, long int k1, long int k2);
+void free_tree(Node *root)
+{
 }

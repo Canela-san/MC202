@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "arvore.h"
-// #include "arvore.c"
-
+#include "arvore.c"
 
 int main()
 {
     char comando[COMMAND_SIZE];
-
+    Node *T = NULL;
     while (1)
     {
         printf("Digite um comando: ");
@@ -17,6 +16,7 @@ int main()
         if (strcmp(comando, "criar") == 0)
         {
             printf("criar\n");
+            T = createTree();
         }
         else if (strcmp(comando, "inserir") == 0)
         {
@@ -25,13 +25,14 @@ int main()
             float valor;
 
             scanf("%ld, %[^,], %f", &k, nome, &valor);
-
+            T = inserir(T, k, nome, valor);
             // Lógica para o comando "inserir"
             printf("insere k=%ld, nome=%s, valor=%f\n", k, nome, valor);
         }
         else if (strcmp(comando, "imprimir") == 0)
         {
             // Lógica para o comando "imprimir"
+            imprimir(T);
             printf("imprime\n");
         }
         else if (strcmp(comando, "buscar") == 0)

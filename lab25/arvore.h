@@ -19,16 +19,16 @@ typedef struct Node
     struct Node *right;
 } Node;
 
-Node *createTree(void);
-void inserir(Node *root, long int k, char nome[], float pontos);
+Node *createTree();
+Node *inserir(Node *root, long int k, char nome[], float pontos);
 void remover(Node *root, long int k);
-void buscar(long int k);
-void imprimir(void);
-void minimo(void);
-void maximo(void);
-void sucessor(long int k);
-void predecessor(long int k);
-void buscar_intervalo(long int k1, long int k2);
+void buscar(Node *root, long int k);
+void imprimir(Node *root);
+void minimo(Node *root);
+void maximo(Node *root);
+void sucessor(Node *root, long int k);
+void predecessor(Node *root, long int k);
+void buscar_intervalo(Node *root, long int k1, long int k2);
 void free_tree(Node *root);
 
 #endif
