@@ -62,10 +62,47 @@ void inserir(Node **root, long int k, char name[], float pontos)
         }
     }
 }
+void remover2(Node **root, long int k){
+    if (*root == NULL)
+        return;
+    
+    Node *aux, *aux2 = *root;
+    while(aux && aux->k != k){
+        aux2 = aux;
+        if (k < aux->k)
+            aux = aux->left;
+        else if (k > aux->k)
+            aux = aux->right;
+    }
+    if (!aux)
+        return;
+    if (aux->left == NULL && aux->right == NULL)
+        if (k < aux2->k)
+            aux2->left = NULL;
+        else
+            aux2->right = NULL;
+
+    else if (aux->left != NULL && aux->right == NULL)
+        if (k < aux2->k)
+            aux2->left = aux->left;
+        else
+            aux2->right = NULL;
+
+    else if (aux->left != NULL && aux->right != NULL)
+        if (k < aux2->k)
+            aux2->left = aux->left;
+        else
+            aux2->right = NULL;
+    
+
+
+}
+
 void remover(Node *root, long int k)
 {
     Node *aux, *aux2;
-    if (&(root->k) == NULL)
+
+    if (root == NULL)
         return;
     if (k < root->k)
         root = root->left;
