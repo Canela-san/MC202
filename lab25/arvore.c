@@ -3,58 +3,69 @@
 #include <string.h>
 #include "arvore.h"
 
-Node *createTree(void)
+
+void inserir(Node **root, long int k, char name[], float pontos)
 {
     Node *node = (Node *)malloc(sizeof(Node));
     if (node == NULL)
     {
-        printf("Erro de locação de memória");
-        return NULL;
-    }
-    node->left = NULL;
-    node->right = NULL;
-    node->k = 0;
-    strcpy(node->name, "");
-    return node;
-}
-void inserir(Node *root, long int k, char name[], float pontos)
-{
-    Node *node = (Node *)malloc(sizeof(Node));
-    Node *aux;
-    if (node == NULL)
-    {
-        prinf("Memoria insuficiente");
+        printf("Memoria insuficiente");
         return;
     }
-    node->k = k;
-    strcpy(node->name, name);
-    node->pontos = pontos;
-    node->left = NULL;
-    node->right = NULL;
-    aux = root;
-
-    if (root->k == NULL)
+    else
     {
-        root = node;
-        free(aux);
-        return NULL;
-    }
+        node->k = k;
+        strcpy(node->name, name);
+        node->pontos = pontos;
+        node->left = NULL;
+        node->right = NULL;
 
-    while (aux)
-    {
-        if (k < aux->k)
-            aux = aux->left;
-        if (k > aux->k)
-            aux = aux->right;
-        if (k == aux->k)
-            return;
+        if (*root == NULL)
+        {
+            *root = node;
+        }
+        else
+        {
+            Node *aux = *root;
+            while (1)
+            {
+                if (k < aux->k)
+                {
+                    if (aux->left == NULL)
+                    {
+                        aux->left = node;
+                        break;
+                    }
+                    else
+                    {
+                        aux = aux->left;
+                    }
+                }
+                else if (k > aux->k)
+                {
+                    if (aux->right == NULL)
+                    {
+                        aux->right = node;
+                        break;
+                    }
+                    else
+                    {
+                        aux = aux->right;
+                    }
+                }
+                else if (k == aux->k)
+                {
+                    free(node);
+                    return;
+                }
+            }
+        }
     }
-    aux = node;
 }
 void remover(Node *root, long int k)
 {
     Node *aux, *aux2;
-    if (root->k == NULL)
+    if (&(root->k) == NULL)
         return;
     if (k < root->k)
         root = root->left;
@@ -91,7 +102,7 @@ void remover(Node *root, long int k)
 Node *buscar(Node *root, long int k)
 {
     Node *aux = root;
-    if (root->k == NULL)
+    if (&(root->k) == NULL)
     {
         printf("Nenhum registro encontrado\n");
     }
@@ -115,37 +126,42 @@ Node *buscar(Node *root, long int k)
     }
     return NULL;
 }
-void imprimir(Node *root){
-    Node *aux = root;
-    imprimir(aux->left);
-    printf("%s", aux->name);
-    imprimir(aux->right);
+void imprimir(Node *root)
+{
+    if (!root)
+        return;
+    imprimir(root->left);
+    printf("-%s (%ld)-", root->name, root->k);
+    imprimir(root->right);
 }
-Node *minimo(Node **root){
-    while(*root->left != NULL)
-        root = *root->left;
-    return root;
+Node *minimo(Node **root)
+{
+    while ((*root)->left != NULL)
+        *root = (*root)->left;
+    return *root;
 }
-Node *maximo(Node **root){
-        while(*root->right != NULL)
-        root = *root->right;
-    return root;
+Node *maximo(Node **root)
+{
+    while ((*root)->right != NULL)
+        *root = (*root)->right;
+    return *root;
 }
-Node *sucessor(Node *root, long int k){
+Node *sucessor(Node *root, long int k)
+{
     Node *aux = (buscar(root, k))->right;
-    while(aux->left)
+    while (aux->left)
         aux = aux->left;
     return aux;
 }
-Node *predecessor(Node *root, long int k){
+Node *predecessor(Node *root, long int k)
+{
     Node *aux = (buscar(root, k))->left;
-    while(aux->right)
+    while (aux->right)
         aux = aux->right;
     return aux;
 }
-void buscar_intervalo(Node *root, long int k1, long int k2);
-printf("%d", k1);
-imprimir(buscar(root, k1->right));
-void free_tree(Node *root)
-{
-}
+// void buscar_intervalo(Node *root, long int k1, long int k2){
+// printf("%ld", k1);
+// imprimir(buscar(root, k1)->right);
+// }
+void free_tree(Node *root);

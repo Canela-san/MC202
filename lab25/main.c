@@ -5,8 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "arvore.h"
-
-// #include "arvore.c"
+#include "arvore.c"
 //Os tamanhos de variaveis como NAME_SIZE estão no arquivo arvore.h
 
 int main()
@@ -21,7 +20,8 @@ int main()
         if (strcmp(comando, "criar") == 0)
         {
             printf("criar\n");
-            T = createTree();
+            //adicionar free para a arvore
+            T = NULL;
         }
         else if (strcmp(comando, "inserir") == 0)
         {
@@ -30,15 +30,17 @@ int main()
             float valor;
 
             scanf("%ld, %[^,], %f", &k, nome, &valor);
-            T = inserir(T, k, nome, valor);
+            inserir(&T, k, nome, valor);
             // Lógica para o comando "inserir"
             printf("insere k=%ld, nome=%s, valor=%f\n", k, nome, valor);
         }
         else if (strcmp(comando, "imprimir") == 0)
         {
             // Lógica para o comando "imprimir"
+            
+            printf("Comando imprimir:\n\n");
             imprimir(T);
-            printf("imprime\n");
+            printf("\n\n");
         }
         else if (strcmp(comando, "buscar") == 0)
         {
