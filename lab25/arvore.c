@@ -3,7 +3,6 @@
 #include <string.h>
 #include "arvore.h"
 
-
 void inserir(Node **root, long int k, char name[], float pontos)
 {
     Node *node = (Node *)malloc(sizeof(Node));
@@ -62,40 +61,90 @@ void inserir(Node **root, long int k, char name[], float pontos)
         }
     }
 }
-void remover2(Node **root, long int k){
-    if (*root == NULL)
-        return;
-    
-    Node *aux, *aux2 = *root;
-    while(aux && aux->k != k){
-        aux2 = aux;
-        if (k < aux->k)
-            aux = aux->left;
-        else if (k > aux->k)
-            aux = aux->right;
+Node *remover(Node *root, long int k)
+{
+    if (root == NULL)
+    {
+        return NULL;
     }
-    if (!aux)
-        return;
-    if (aux->left == NULL && aux->right == NULL)
-        if (k < aux2->k)
-            aux2->left = NULL;
+
+    Node *current = root;
+    Node *parent = NULL;
+
+    // Localizar o nó a ser removido
+    while (current != NULL && current->k != k)
+    {
+        parent = current;
+        if (k < current->k)
+        {
+            current = current->left;
+        }
         else
-            aux2->right = NULL;
+        {
+            current = current->right;
+        }
+    }
 
-    else if (aux->left != NULL && aux->right == NULL)
-        if (k < aux2->k)
-            aux2->left = aux->left;
+    // Se o nó não foi encontrado, retornar a raiz original
+    if (current == NULL)
+    {
+        return root;
+    }
+
+    // Caso 1: Nó folha
+    if (current->left == NULL && current->right == NULL)
+    {
+        if (parent == NULL)
+        {
+            free(current);
+            return NULL;
+        }
+        else if (parent->left == current)
+        {
+            free(current);
+            parent->left = NULL;
+        }
         else
-            aux2->right = NULL;
+        {
+            free(current);
+            parent->right = NULL;
+        }
+    }
+    // Caso 2: Nó com apenas um filho
+    else if (current->left == NULL || current->right == NULL)
+    {
+        Node *child = (current->left != NULL) ? current->left : current->right;
 
-    else if (aux->left != NULL && aux->right != NULL)
-        if (k < aux2->k)
-            aux2->left = aux->left;
+        if (parent == NULL)
+        {
+            free(current);
+            return child;
+        }
+        else if (parent->left == current)
+        {
+            free(current);
+            parent->left = child;
+        }
         else
-            aux2->right = NULL;
-    
+        {
+            free(current);
+            parent->right = child;
+        }
+    }
+    // Caso 3: Nó com dois filhos
+    else
+    {
+        Node *successor = current->right;
+        while (successor->left)
+            successor = successor->left;
+        current->k = successor->k;
+        strcpy(current->name, successor->name);
+        current->pontos = successor->pontos;
 
+        current->right = remover(current->right, successor->k);
+    }
 
+    return root;
 }
 
 void remover(Node *root, long int k)
