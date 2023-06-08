@@ -8,7 +8,7 @@ void inserir(Node **root, long int k, char name[], float pontos)
     Node *node = (Node *)malloc(sizeof(Node));
     if (node == NULL)
     {
-        printf("Memoria insuficiente");
+        printf("memoria insuficiente");
         return;
     }
     else
@@ -61,153 +61,113 @@ void inserir(Node **root, long int k, char name[], float pontos)
         }
     }
 }
-Node *remover(Node *root, long int k)
+Node *removeNode(Node *root, long int k)
 {
-    if (root == NULL)
-    {
-        return NULL;
-    }
-
     Node *current = root;
     Node *parent = NULL;
+    int isLeftChild = 0;
 
-    // Localizar o nó a ser removido
     while (current != NULL && current->k != k)
     {
         parent = current;
         if (k < current->k)
         {
             current = current->left;
+            isLeftChild = 1;
         }
         else
         {
             current = current->right;
+            isLeftChild = 0;
         }
     }
 
-    // Se o nó não foi encontrado, retornar a raiz original
     if (current == NULL)
-    {
         return root;
-    }
 
-    // Caso 1: Nó folha
     if (current->left == NULL && current->right == NULL)
     {
-        if (parent == NULL)
+        if (current == root)
         {
-            free(current);
+            free(root);
             return NULL;
         }
-        else if (parent->left == current)
-        {
-            free(current);
-            parent->left = NULL;
-        }
-        else
-        {
-            free(current);
-            parent->right = NULL;
-        }
-    }
-    // Caso 2: Nó com apenas um filho
-    else if (current->left == NULL || current->right == NULL)
-    {
-        Node *child = (current->left != NULL) ? current->left : current->right;
 
-        if (parent == NULL)
-        {
-            free(current);
-            return child;
-        }
-        else if (parent->left == current)
-        {
-            free(current);
-            parent->left = child;
-        }
+        if (isLeftChild)
+            parent->left = NULL;
         else
-        {
-            free(current);
-            parent->right = child;
-        }
+            parent->right = NULL;
+
+        free(current);
     }
-    // Caso 3: Nó com dois filhos
+    else if (current->left == NULL)
+    {
+        if (current == root)
+        {
+            root = current->right;
+            free(current);
+            return root;
+        }
+
+        if (isLeftChild)
+            parent->left = current->right;
+        else
+            parent->right = current->right;
+
+        free(current);
+    }
+    else if (current->right == NULL)
+    {
+        if (current == root)
+        {
+            root = current->left;
+            free(current);
+            return root;
+        }
+
+        if (isLeftChild)
+            parent->left = current->left;
+        else
+            parent->right = current->left;
+
+        free(current);
+    }
     else
     {
-        Node *successor = current->right;
-        while (successor->left)
-            successor = successor->left;
+        Node *successor = minimo(current->right);
         current->k = successor->k;
         strcpy(current->name, successor->name);
         current->pontos = successor->pontos;
-
-        current->right = remover(current->right, successor->k);
+        current->right = removeNode(current->right, successor->k);
     }
 
     return root;
 }
-
-void remover(Node *root, long int k)
-{
-    Node *aux, *aux2;
-
-    if (root == NULL)
-        return;
-    if (k < root->k)
-        root = root->left;
-    if (k > root->k)
-        root = root->right;
-    if (k == root->k)
-    {
-        if (root->left == NULL)
-        {
-            aux = root->right;
-            free(root);
-            return;
-        }
-        if (root->right == NULL)
-        {
-            aux = root->left;
-            free(root);
-            return;
-        }
-        aux2 = root->left;
-        while (aux2->right != NULL)
-            aux2 = aux2->right;
-        root->k = aux2->k;
-        root->left = aux2->left;
-        root->right = aux2->right;
-        free(aux2);
-        return;
-    }
-    remover(root->left, k);
-    remover(root->right, k);
-    return;
-}
-
 Node *buscar(Node *root, long int k)
 {
     Node *aux = root;
-    if (&(root->k) == NULL)
-    {
-        printf("Nenhum registro encontrado\n");
-    }
+    if (root == NULL)
+        printf("nao ha cliente %ld\n", k);
     else
     {
         while (aux)
         {
             if (k < aux->k)
             {
-                aux = aux->left;
+                if (aux->left)
+                    aux = aux->left;
+                else
+                    return NULL;
             }
             else if (k > aux->k)
             {
-                aux = aux->right;
+                if (aux->right)
+                    aux = aux->right;
+                else
+                    return NULL;
             }
             if (k == aux->k)
-            {
                 return aux;
-            }
         }
     }
     return NULL;
@@ -217,37 +177,107 @@ void imprimir(Node *root)
     if (!root)
         return;
     imprimir(root->left);
-    printf("-%s (%ld)-", root->name, root->k);
+    printf("%s (%ld) ", root->name, root->k);
     imprimir(root->right);
 }
-Node *minimo(Node **root)
+Node *minimo(Node *root)
 {
-    while ((*root)->left != NULL)
-        *root = (*root)->left;
-    return *root;
-}
-Node *maximo(Node **root)
-{
-    while ((*root)->right != NULL)
-        *root = (*root)->right;
-    return *root;
-}
-Node *sucessor(Node *root, long int k)
-{
-    Node *aux = (buscar(root, k))->right;
-    while (aux->left)
+    if (!root)
+        return NULL;
+    Node *aux = root;
+    while (aux->left != NULL)
         aux = aux->left;
     return aux;
 }
-Node *predecessor(Node *root, long int k)
+Node *maximo(Node *root)
 {
-    Node *aux = (buscar(root, k))->left;
-    while (aux->right)
+    if (!root)
+        return NULL;
+    Node *aux = root;
+    while (aux->right != NULL)
         aux = aux->right;
     return aux;
 }
-// void buscar_intervalo(Node *root, long int k1, long int k2){
-// printf("%ld", k1);
-// imprimir(buscar(root, k1)->right);
-// }
-void free_tree(Node *root);
+Node *sucessor(Node *root, long int k)
+{
+    Node *current = root;
+    Node *successor = NULL;
+
+    while (current != NULL)
+    {
+        if (current->k == k)
+        {
+            if (current->right != NULL)
+            {
+                successor = minimo(current->right);
+            }
+            break;
+        }
+        else if (current->k > k)
+        {
+            successor = current;
+            current = current->left;
+        }
+        else
+        {
+            current = current->right;
+        }
+    }
+
+    return successor;
+}
+Node *predecessor(Node *root, long int k)
+{
+    Node *current = root;
+    Node *predecessor = NULL;
+
+    while (current != NULL)
+    {
+        if (current->k == k)
+        {
+            if (current->left != NULL)
+            {
+                predecessor = maximo(current->left);
+            }
+            break;
+        }
+        else if (current->k > k)
+        {
+            current = current->left;
+        }
+        else
+        {
+            predecessor = current;
+            current = current->right;
+        }
+    }
+
+    return predecessor;
+}
+void imprimir_intervalo(Node *root, long int k1, long int k2, int *temp)
+{
+    if (root == NULL)
+        return;
+
+    if (root->k > k1)
+        imprimir_intervalo(root->left, k1, k2, temp);
+
+    if (root->k >= k1 && root->k <= k2)
+    {
+        *temp = 1;
+        printf("%ld ", root->k);
+    }
+
+    if (root->k < k2)
+        imprimir_intervalo(root->right, k1, k2, temp);
+}
+void freeTree(Node *root)
+{
+    if (root == NULL)
+        return;
+
+    freeTree(root->left);
+    freeTree(root->right);
+
+    free(root);
+}

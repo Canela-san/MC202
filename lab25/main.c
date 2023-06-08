@@ -5,22 +5,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include "arvore.h"
-#include "arvore.c"
-//Os tamanhos de variaveis como NAME_SIZE estão no arquivo arvore.h
+// Os tamanhos de variaveis como NAME_SIZE e COMMAND_SIZE estão no arquivo arvore.h
 
 int main()
 {
     char comando[COMMAND_SIZE];
     Node *T = NULL;
+    Node *aux;
+    int temp = 0;
     while (1)
     {
-        printf("Digite um comando: ");
         scanf("%s", comando);
 
         if (strcmp(comando, "criar") == 0)
         {
-            printf("criar\n");
-            //adicionar free para a arvore
+            freeTree(T);
             T = NULL;
         }
         else if (strcmp(comando, "inserir") == 0)
@@ -28,80 +27,79 @@ int main()
             long int k;
             char nome[NAME_SIZE];
             float valor;
-
             scanf("%ld, %[^,], %f", &k, nome, &valor);
             inserir(&T, k, nome, valor);
-            // Lógica para o comando "inserir"
-            printf("insere k=%ld, nome=%s, valor=%f\n", k, nome, valor);
         }
         else if (strcmp(comando, "imprimir") == 0)
         {
-            // Lógica para o comando "imprimir"
-            
-            printf("Comando imprimir:\n\n");
-            imprimir(T);
-            printf("\n\n");
+            if (T)
+            {
+                printf("clientes: ");
+                imprimir(T);
+                printf("\n");
+            }
+            else
+                printf("arvore vazia\n");
         }
         else if (strcmp(comando, "buscar") == 0)
         {
             long int valor;
-
             scanf("%ld", &valor);
-
-            printf("busca %ld\n", valor);
-            // Lógica para o comando "buscar"
+            Node *no = buscar(T, valor);
+            if (no)
+            {
+                printf("cliente %ld: ", valor);
+                printf("%s, %.2f pontos\n", no->name, no->pontos);
+            }
+            else
+                printf("nao ha cliente %ld\n", valor);
         }
         else if (strcmp(comando, "buscar-intervalo") == 0)
         {
             long int inicio, fim;
-
             scanf("%ld %ld", &inicio, &fim);
-            printf("busca %ld - %ld\n", inicio, fim);
-            // Lógica para o comando "buscar-intervalo"
+            printf("clientes no intervalo [%ld,%ld]: ", inicio, fim);
+            imprimir_intervalo(T, inicio, fim, &temp);
+            if (!temp)
+                printf("nenhum");
+            temp = 0;
+            printf("\n");
         }
         else if (strcmp(comando, "remover") == 0)
         {
             long int valor;
-
             scanf("%ld", &valor);
-            printf("remove %ld\n", valor);
-            // Lógica para o comando "remover"
+            T = removeNode(T, valor);
         }
         else if (strcmp(comando, "predecessor") == 0)
         {
             long int valor;
-
             scanf("%ld", &valor);
             printf("predecessor %ld\n", valor);
-            // Lógica para o comando "predecessor"
         }
         else if (strcmp(comando, "sucessor") == 0)
         {
             long int valor;
-
             scanf("%ld", &valor);
             printf("sucessor %ld\n", valor);
-            // Lógica para o comando "sucessor"
         }
         else if (strcmp(comando, "minimo") == 0)
         {
-            // Lógica para o comando "minimo"
-            printf("minimo\n");
+            aux = minimo(T);
+            printf("minimo: %ld\n", aux->k);
         }
         else if (strcmp(comando, "maximo") == 0)
         {
-            // Lógica para o comando "maximo"
-            printf("maximo\n");
+            aux = maximo(T);
+            printf("maximo: %ld\n", aux->k);
         }
         else if (strcmp(comando, "terminar") == 0)
         {
-            printf("termina\n");
-            break;
+            freeTree(T);
+            return 0;
         }
         else
-        {
             printf("Comando inválido!\n");
-        }
     }
 
     return 0;
