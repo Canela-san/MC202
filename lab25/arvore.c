@@ -3,6 +3,8 @@
 #include <string.h>
 #include "arvore.h"
 
+
+
 void inserir(Node **root, long int k, char name[], float pontos)
 {
     Node *node = (Node *)malloc(sizeof(Node));
